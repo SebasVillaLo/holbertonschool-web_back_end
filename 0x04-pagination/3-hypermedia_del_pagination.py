@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
+"""Deletion-resilient hypermedia pagination
 """
-Deletion-resilient hypermedia pagination
-"""
-
 import csv
 import math
 from typing import List, Dict
-
-from numpy import insert
 
 
 class Server:
@@ -42,13 +38,13 @@ class Server:
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """ get_hyper_index """
+        """Return pagination information
+        """
         assert type(index) == int and type(page_size) == int
         assert 0 <= index < len(self.dataset())
         dataset = self.indexed_dataset()
         data = []
         next_index = index
-
         for _ in range(page_size):
             while not dataset.get(next_index):
                 next_index += 1
@@ -56,7 +52,7 @@ class Server:
             next_index += 1
         return {
             'index': index,
-            'data': data,
-            'page_size': page_size,
             'next_index': next_index,
+            'page_size': page_size,
+            'data': data,
         }
