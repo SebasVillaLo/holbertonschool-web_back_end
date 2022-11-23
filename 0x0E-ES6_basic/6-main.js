@@ -1,3 +1,3 @@
-import getSanFranciscoDescription from './6-string-interpolation';
+import getSanFranciscoDescription from './6-string-interpolation.js';
 
 console.log(getSanFranciscoDescription());

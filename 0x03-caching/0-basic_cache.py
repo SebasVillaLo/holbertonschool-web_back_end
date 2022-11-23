@@ -1,31 +1,19 @@
 #!/usr/bin/python3
-""""
-importing self.cache_data
-dictionary from the parent class BaseCaching
-"""
-
+"""  Basic dictionary """
 from base_caching import BaseCaching
 
 
 class BasicCache(BaseCaching):
-    """
-        a class BasicCache that inherits from BaseCaching
-        and is a caching system
-    """
+    """ Class that inherits from BaseCaching and is a caching system
+        This caching system doesn’t have limit """
     def put(self, key, item):
-        """"
-            Must assign to the dictionary
-            self.cache_data the item value for the key key.
-            If key or item is None, this method should not do anything.
-        """
-        if not key or not item:
-            pass
-        else:
+        """ Assign to the dictionary """
+        if key and item:
             self.cache_data[key] = item
 
     def get(self, key):
-        """gets the required element by key"""
-        if key not in self.cache_data.keys():
-            return None
+        """ Return the value linked """
+        if key is not None or self.cache_data.get(key) is not None:
+            return self.cache_data.get(key)
         else:
-            return self.cache_data[key]
+            return None

@@ -1,55 +1,44 @@
 # 0x07. Session authentication
+:open_file_folder: Specializations - Web Stack programming ― Back-end  
+:bust_in_silhouette: by Guillaume, CTO at Holberton School  
+:copyright: **[Holberton School](https://www.holbertonschool.com/)**  
+:bookmark:
 
-## Description
+## Background Context
+In this project, you will implement a Session Authentication. You are not allowed to install any other module.
 
-What you should learn from this project:
+## Resources
+### Read or watch:
+* [REST API Authentication Mechanisms - Only the session auth part](https://www.youtube.com/watch?v=501dpx2IjGY)
+* [HTTP Cookie](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cookie)
+* [Flask](https://palletsprojects.com/p/flask/)
+* [Flask Cookie](https://flask.palletsprojects.com/en/1.1.x/quickstart/#cookies)
 
+## Learning Objectives
+At the end of this project, you are expected to be able to [explain to anyone](https://fs.blog/2012/04/feynman-technique/), without the help of Google:
+### General
 * What authentication means
 * What session authentication means
 * What Cookies are
 * How to send Cookies
 * How to parse Cookies
 
----
+## Requirements
+* A ```README.md``` file.
 
-### [0. Et moi et moi et moi!](./api/v1/app.py)
+## Tasks
+* [x] 0. Et moi et moi et moi!
+* [x] 1. Empty session
+* [x] 2. Create a session
+* [x] 3. User ID from Session ID
+* [x] 4. Session cookie
+* [x] 5. Before request
+* [x] 6. Use Session ID for identifying a User
+* [x] 7. New view for Session Authentication
+* [x] 8. Logout
+* [ ] 9. Expiration?
+* [ ] 10. Sessions in database
 
-* Copy all your work of the 0x06. Basic authentication project in this new folder.
-
-### [1. Empty session](./api/v1/auth/session_auth.py)
-
-* Create a class SessionAuth that inherits from Auth. For the moment this class will be empty. It’s the first step for creating a new authentication mechanism:
-
-### [2. Create a session](./api/v1/auth/session_auth.py)
-
-* Update SessionAuth class:
-
-### [3. User ID from Session ID](./api/v1/auth/session_auth.py)
-
-* Update SessionAuth class:
-
-### [4. Session cookie](./api/v1/auth/auth.py)
-
-* Update api/v1/auth/auth.py by adding the method def session_cookie(self, request=None): that returns a cookie value from a request:
-
-### [5. Before request](./api/v1/app.py)
-
-* Update the @app.before_request method in api/v1/app.py:
-
-### [6. Use Session ID for identifying a User](./api/v1/auth/session_auth.py)
-
-* Update SessionAuth class:
-
-### [7. New view for Session Authentication](./api/v1/views/session_auth.py)
-
-* Create a new Flask view that handles all routes for the Session authentication.
-
-### [8. Logout](./api/v1/auth/session_auth.py)
-
-* Update the class SessionAuth by adding a new method def destroy_session(self, request=None): that deletes the user session / logout:
-
----
-
-## Author
-
-**Joshua Martinez** - [dantsub](https://github.com/dantsub) :octocat:
+## Software engineer
+Javier Andrés Garzón Patarroyo  
+:octocat: [GitHub](https://github.com/javierandresgp/)

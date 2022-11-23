@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
-""" Take the code from wait_n and alter
-    it into a new function task_wait_n.
-    sThe code is nearly identical to wait_n
-    except task_wait_random is being called.
-"""
+''' test file for asyncio.wait() '''
+
+import typing
 import asyncio
-import random
-from typing import List
+
+wait_random = __import__('0-basic_async_syntax').wait_random
 task_wait_random = __import__('3-tasks').task_wait_random
 
 
-async def task_wait_n(n: int, max_delay: int) -> List[float]:
-    """ Wait_n """
-    times: List[float] = []
-    for i in range(n):
-        times.append(task_wait_random(max_delay))
-    return [await i for i in asyncio.as_completed(times)]
+async def task_wait_n(n: int, max_delay: int) -> typing.List[float]:
+    """
+    It creates a list of `n` tasks, each of which waits for a
+    random amount of time between 0 and
+    `max_delay` seconds, and then returns a list of the times
+    that each task waited
+
+    :param n: the number of tasks to run
+    :type n: int
+    :param max_delay: the maximum delay in seconds for each task
+    :type max_delay: int
+    :return: A list of floats, sorted in ascending order.
+    """
+    list_got = [await task_wait_random(max_delay) for delay in range(n)]
+    return sorted(list_got)

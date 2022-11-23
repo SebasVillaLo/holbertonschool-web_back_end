@@ -8,16 +8,16 @@ export default class Currency {
     return this._code;
   }
 
-  set code(val) {
-    this._code = val;
-  }
-
   get name() {
     return this._name;
   }
 
-  set name(val) {
-    this._name = val;
+  set code(newCode) {
+    this._code = newCode;
+  }
+
+  set name(newName) {
+    this._name = newName;
   }
 
   displayFullCurrency() {

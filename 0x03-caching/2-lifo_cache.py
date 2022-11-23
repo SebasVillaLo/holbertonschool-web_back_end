@@ -1,38 +1,27 @@
 #!/usr/bin/python3
-"""
-placeholder
-"""
-
+""" LIFOCache caching """
 from base_caching import BaseCaching
 
 
 class LIFOCache(BaseCaching):
-    """
-        placeholder
-    """
-    LAST_PUT = ""
+    """ Class that inherits from BaseCaching and is a caching system """
 
     def __init__(self):
         super().__init__()
+        self.last_key = ''
 
     def put(self, key, item):
-        """
-        placeholder
-        """
-        if key is None or item is None:
-            return
-        if (len(self.cache_data.items()) == BaseCaching.MAX_ITEMS):
-            if (key not in self.cache_data.keys()):
-                lastItem = self.LAST_PUT
-                print("DISCARD:", lastItem)
-                self.cache_data.pop(lastItem)
-
-        self.cache_data[key] = item
-        self.LAST_PUT = key
+        """ Assign to the dictionary, LIFO algorithm, add element """
+        if key and item:
+            self.cache_data[key] = item
+            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+                print("DISCARD: {}".format(self.last_key))
+                self.cache_data.pop(self.last_key)
+            self.last_key = key
 
     def get(self, key):
-        """gets the required element by key"""
-        if key not in self.cache_data.keys():
-            return None
-        else:
-            return self.cache_data[key]
+        """ Return the value linked """
+        if key is not None or self.cache_data.get(key) is not None:
+            if key in self.cache_data:
+                return self.cache_data[key]
+        return None

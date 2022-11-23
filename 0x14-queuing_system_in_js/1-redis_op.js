@@ -1,33 +1,23 @@
-import { redis, createClient } from "redis";
+import redis from 'redis';
+const client = redis.createClient();
 
-const client = createClient();
-
-(async () => {
-  try {
-    await client.connect();
+client.on("error", (error) => {
+  if (error) console.log(`Redis client not connected to the server: ${error}`)
+}).on('ready', () => {
     console.log('Redis client connected to the server');
-  } catch (e) {
-    console.log(`Redis client not connected to the server: ${e.message}`);
-  }
+});
 
-})();
 
 function setNewSchool(schoolName, value) {
-  const setkey = client.set(schoolName, value, (reply) => {
-    return reply
-  });
-  setkey.then(res => {
-    console.log(`Reply: ${res}`);
-  });
+    client.set(schoolName, value, (error, reply) => {
+        redis.print(`Reply: ${reply}`);
+    });
 }
 
 function displaySchoolValue(schoolName) {
-  const getkey = client.get(schoolName, (reply) => {
-    return reply
-  });
-  getkey.then(res => {
-    console.log(res);
-  });
+    client.get(schoolName, (error, reply) => {
+        console.log(reply);
+    });
 }
 
 displaySchoolValue('Holberton');

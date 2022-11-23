@@ -1,48 +1,47 @@
 #!/usr/bin/python3
-"""
-placeholder
-"""
-
+""" LRU Caching """
 from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
-    """
-        placeholder
-    """
-    AGE = 0
-    AGE_BITS = {}
-
+    """ Class that inherits from BaseCaching and is a caching system """
     def __init__(self):
-
         super().__init__()
+        self.head, self.tail = '-', '='
+        self.next, self.prev = {}, {}
+        self.handle(self.head, self.tail)
+
+    def handle(self, head, tail):
+        """ LRU algorithm, handle elements """
+        self.next[head], self.prev[tail] = tail, head
+
+    def _remove(self, key):
+        """ LRU algorithm, remove element """
+        self.handle(self.prev[key], self.next[key])
+        del self.prev[key], self.next[key], self.cache_data[key]
+
+    def _add(self, key, item):
+        """ LRU algorithm, add element """
+        self.cache_data[key] = item
+        self.handle(self.prev[self.tail], key)
+        self.handle(key, self.tail)
+        if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+            print("DISCARD: {}".format(self.next[self.head]))
+            self._remove(self.next[self.head])
 
     def put(self, key, item):
-        """
-        placeholder
-        """
-        if key is None or item is None:
-            return
-        if (len(self.cache_data.items()) == BaseCaching.MAX_ITEMS):
-            if (key not in self.cache_data.keys()):
-                leastItem = {
-                    k: v for k, v in sorted(self.AGE_BITS.items(),
-                                            key=lambda item: item[1])
-                }
-                leastItem = list(leastItem)[0]
-                print("DISCARD:", leastItem)
-                self.cache_data.pop(leastItem)
-                self.AGE_BITS.pop(leastItem)
-
-        self.cache_data[key] = item
-        self.AGE += 1
-        self.AGE_BITS[key] = self.AGE
+        """ Assign to the dictionary """
+        if key and item:
+            if key in self.cache_data:
+                self._remove(key)
+            self._add(key, item)
 
     def get(self, key):
-        """gets the required element by key"""
-        if key not in self.cache_data.keys():
+        """ Return the value linked """
+        if key is None or self.cache_data.get(key) is None:
             return None
-        else:
-            self.AGE += 1
-            self.AGE_BITS[key] = self.AGE
-            return self.cache_data[key]
+        if key in self.cache_data:
+            value = self.cache_data[key]
+            self._remove(key)
+            self._add(key, value)
+            return value

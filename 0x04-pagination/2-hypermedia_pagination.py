@@ -1,43 +1,18 @@
 #!/usr/bin/env python3
-""" Replicate code from the previous task.
-    Implement a get_hyper method that takes the
-    same arguments (and defaults) as get_page and
-    returns a dictionary containing the following key-value pairs:
-        - page_size: the length of the returned dataset page
-        - page: the current page number
-        - data: the dataset page (equivalent to return from previous task)
-        - next_page: number of the next page, None if no next page
-        - prev_page: number of the previous page, None if no previous page
-        - total_pages: the total number of pages in the dataset as an integer
-        - Make sure to reuse get_page in your implementation.
-    You can use the math module if necessary.
-"""
+""" Hypermedia pagination """
 import csv
 import math
-from typing import List, Tuple, Dict, Any
+from typing import List, Dict, Any
 
 
-def index_range(page: int, page_size: int) -> Tuple[int]:
-    """ Index_range
-        Arguments:
-        ---------
-            `page`: current page number
-            `page_size`: items number in every page
-        Return:
-        -------
-            list for those particular pagination parameters
-    """
-    start: int
-    end: int
-
-    if page == 1:
-        start = 0
-    else:
-        start = (page - 1) * page_size
-
-    end = page * page_size
-
-    return (start, end)
+def index_range(page, page_size):
+    """ return a tuple of size two containing a start index and an end index
+        corresponding to the range of indexes to return in a list for those
+        particular pagination parameters. """
+    if page and page_size:
+        start_index = (page - 1) * page_size
+        end_index = start_index + page_size
+        return start_index, end_index
 
 
 class Server:
@@ -60,34 +35,25 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """ paginate the dataset correctly and
-            return the appropriate page of the dataset
-        """
-        assert(type(page) == int)
-        assert(type(page_size) == int)
-        assert(page > 0)
-        assert(page_size > 0)
-        dataset = self.dataset()
+        """ obtains the indexes and return corresponding pages """
+        assert type(page) == int and page > 0
+        assert type(page_size) == int and page_size > 0
         start, end = index_range(page, page_size)
-        return dataset[start: end]
+        pages = []
+        if start >= len(self.dataset()):
+            return pages
+        pages = self.dataset()
+        return pages[start:end]
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, Any]:
-        """ returns a dictionary containing the following key-value pairs """
-        data: List[Any] = self.get_page(page, page_size)
-        total_pages: int = math.ceil(len(self.__dataset) / page_size)
-        next_page: int = page + 1
-        prev_page: int = page - 1
-        if next_page > total_pages:
-            next_page = None
-
-        if prev_page <= 0:
-            prev_page = None
-
-        return {
-            'page_size': page_size,
-            'page': page,
-            'data': data,
-            'next_page': next_page,
-            'prev_page': prev_page,
-            'total_pages': total_pages
-        }
+        """ returns a dictionary """
+        assert type(page) == int and page > 0
+        assert type(page_size) == int and page_size > 0
+        total_pages = math.floor(len(self.dataset()) / page_size)
+        return {'page_size': len(self.get_page(page, page_size)),
+                'page': page,
+                'data': self.get_page(page, page_size),
+                'next_page': page + 1 if page + 1 < total_pages else None,
+                'prev_page': page - 1 if page > 1 else None,
+                'total_pages': total_pages
+                }

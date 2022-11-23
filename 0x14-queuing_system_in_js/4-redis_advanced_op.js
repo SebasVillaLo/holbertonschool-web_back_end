@@ -1,30 +1,24 @@
-import { print, createClient } from "redis";
+import redis from 'redis';
+const client = redis.createClient();
 
-const client = createClient();
+client.on("error", (error) => {
+    if (error) console.log(`Redis client not connected to the server: ${error}`)
+  }).on('ready', () => {
+      console.log('Redis client connected to the server');
+  });
 
-(async () => {
-  try {
-    await client.connect();
-    console.log('Redis client connected to the server');
-  } catch (e) {
-    console.log(`Redis client not connected to the server: ${e.message}`);
-  }
+const name = 'HolbertonSchools';
+const values = {'Portland': 50,
+               'Seattle': 80,
+               'New York': 20,
+               'Bogota': 20,
+               'Cali': 40,
+               'Paris': 2}
 
-})();
+for (const [key, val] of Object.entries(values)) {
+  client.hset(name, key, val, (error, reply) =>
+    redis.print((`Reply: ${reply}`))
+  );
+}
 
-const hset = client.hSet('HolbertonSchools', 'Portland', '50', (err, reply) => reply);
-hset.then(res => console.log(`Reply: ${res}`));
-const hse1 = client.hSet('HolbertonSchools', 'Seattle', '80', (reply) => reply);
-hse1.then(res => console.log(`Reply: ${res}`));
-const hset2 = client.hSet('HolbertonSchools', 'New York', '20', (reply) => reply);
-hset2.then(res => console.log(`Reply: ${res}`));
-client.hSet('HolbertonSchools', 'Bogota', '20', (reply) => reply);
-hset2.then(res => console.log(`Reply: ${res}`));
-const hset3 = client.hSet('HolbertonSchools', 'Cali', '40', (reply) => reply);
-hset3.then(res => console.log(`Reply: ${res}`));
-client.hSet('HolbertonSchools', 'Paris','2', print);
-
-const getall = client.hGetAll('HolbertonSchools', (err, reply) => console.log(reply));
-getall.then(res => {
-  console.log(res);
-})
+client.hgetall(name, (error, object) => console.log(object));
